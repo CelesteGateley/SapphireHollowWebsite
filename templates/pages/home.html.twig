@@ -1,0 +1,12 @@
+{% extends 'bases/container.html.twig' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    {% for article in articles %}
+        <div class="post" style="border: 2px solid black; border-radius: 5px; padding-left: 5px; padding-right: 5px">
+            <div id="header" class="border-bottom">{{ article.title }}</div>
+            <div id="body">{{ article.getBody() }}</div>
+            <div id="footer" class="border-top text-right">Read more...</div>
+        </div>
+        <p></p>
+    {% endfor %}
+{% endblock %}

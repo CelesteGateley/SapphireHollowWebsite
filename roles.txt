@@ -1,0 +1,10 @@
+ROLE_ROOT: Root User (All Perms)
+ROLE_OWNER: All Perms (Not Root)
+ROLE_ADMIN: [ROLE_ARTICLE_CREATE, ROLE_%form%_VIEW, ROLE_%form%_VERIFY]
+ROLE_MODERATOR: [ROLE_%form%_VIEW]
+ROLE_USER: []
+
+
+ROLE_ARTICLE_CREATE: Create News Articles
+ROLE_%form%_VIEW: View specific form submissions
+ROLE_%form%_VERIFY: Accept/Deny specific forms
