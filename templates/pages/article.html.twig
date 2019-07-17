@@ -1,0 +1,10 @@
+{% extends 'bases/container.html.twig' %}
+{% block title %}Article Viewer{% endblock %}
+{% block content %}
+    <div id="title" class="border-bottom">
+        <h1 style="display: inline-block;">{{ article.title }}</h1><i style="font-size: 12px; display: inline-block">Written by {{ authors[article.author] }} on {{ article.createdOn|date('Y-m-d H:i') }}</i>
+    </div>
+    <div id="body">
+        {{ article.body|nl2br }}
+    </div>
+{% endblock %}

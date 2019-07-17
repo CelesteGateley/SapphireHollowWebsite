@@ -19,6 +19,10 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+    public function findByOrderAsc() {
+        return $this->findBy(array(), array('created_on' => 'DESC'));
+    }
+
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */

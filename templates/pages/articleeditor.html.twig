@@ -1,0 +1,10 @@
+{% extends 'bases/container.html.twig' %}
+{% block title %}Edit Article{% endblock %}
+{% block content %}
+    {{ form_start(articleForm) }}
+    {{ form_row(articleForm.title) }}
+    {{ form_row(articleForm.body) }}
+
+    <button class="btn btn-lg btn-primary">Submit</button>
+    {{ form_end(articleForm) }}
+{% endblock %}

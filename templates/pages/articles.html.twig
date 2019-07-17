@@ -1,0 +1,31 @@
+{% extends 'bases/container.html.twig' %}
+{% block title %}Articles{% endblock %}
+{% block content %}
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Created On</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for article in articles %}
+        <tr onclick="loadArticle({{ article.id }})">
+            <th scope="row">{{ article.title }}</th>
+            <td>{{ authors[article.author] }}</td>
+            <td>{{ article.createdOn|date('Y-m-d H:i:s') }}</td>
+            <td><a href="{{ path('app_article_delete', {'id': article.id}) }}">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        function loadArticle(id) {
+            location.href = "/article/" + id + "/";
+        }
+    </script>
+{% endblock %}

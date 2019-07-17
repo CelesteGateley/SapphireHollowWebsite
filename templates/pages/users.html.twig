@@ -1,0 +1,30 @@
+{% extends 'bases/container.html.twig' %}
+{% block title %}Users{% endblock %}
+{% block content %}
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">User ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+        </tr>
+        </thead>
+    {% for user in users %}
+        <tr>
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% set len = user.roles|length %}
+                {% for x in 1..len %}
+                    {% if x == 1 %}
+                     {{ user.roles[x-1] }}
+                    {% else %}, {{ user.roles[x-1] }}
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

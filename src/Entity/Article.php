@@ -26,6 +26,16 @@ class Article
      */
     private $body;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $author;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_on;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -43,6 +53,21 @@ class Article
         return $this;
     }
 
+    public function getPartialBody(): ?string {
+        $hasShrunk = false;
+        $partial = $this->body;
+        if (strlen($partial) > 500) {
+            $hasShrunk = true;
+            $partial = substr($partial, 0, 500);
+        }
+        if (substr_count($partial, "\n") > 3) {
+            $hasShrunk = true;
+            $partial = implode("\n", array_slice(explode("\n", $partial),0 ,3));
+        }
+        if ($hasShrunk) { $partial .= '...'; }
+        return $partial;
+    }
+
     public function getBody(): ?string
     {
         return $this->body;
@@ -51,6 +76,30 @@ class Article
     public function setBody(string $body): self
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?int
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(int $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getCreatedOn(): ?\DateTimeInterface
+    {
+        return $this->created_on;
+    }
+
+    public function setCreatedOn(\DateTimeInterface $created_on): self
+    {
+        $this->created_on = $created_on;
 
         return $this;
     }

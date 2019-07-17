@@ -1,0 +1,8 @@
+.dropdown-width {
+    min-width: 2rem;
+    width: 150px;
+}
+
+.h-dropdown-width {
+    padding-right: 10px;
+}

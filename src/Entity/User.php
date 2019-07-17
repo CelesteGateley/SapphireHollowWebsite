@@ -3,13 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
-class User implements UserInterface
+class User implements UserInterface, EquatableInterface
 {
     /**
      * @ORM\Id()
@@ -44,6 +46,11 @@ class User implements UserInterface
         return $this->id;
     }
 
+    public function setId(int $id): ?self {
+        $this->id = $id;
+        return $this;
+    }
+
     /**
      * A visual identifier that represents this user.
      *
@@ -75,8 +82,9 @@ class User implements UserInterface
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
-
+        // Strip Excess ROLE_USER from array
+        if (($key = array_search('ROLE_USER', $roles, true)) !== false) { unset($roles[$key]); }
+        $this->roles = array_unique($roles);
         return $this;
     }
 
@@ -120,7 +128,44 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+        return $this;
+    }
 
+    /**
+     * The equality comparison should neither be done by referential equality
+     * nor by comparing identities (i.e. getId() === getId()).
+     *
+     * However, you do not need to compare every attribute, but only those that
+     * are relevant for assessing whether re-authentication is required.
+     *
+     * @return bool
+     */
+    public function isEqualTo(UserInterface $user) {
+
+        if ($user instanceof self) {
+            // Check that the roles are the same, in any order
+            $isEqual = count($this->getRoles()) === count($user->getRoles());
+            if ($isEqual) {
+                foreach($this->getRoles() as $role) {
+                    $isEqual = $isEqual && in_array($role, $user->getRoles(), true);
+                }
+            }
+            return $isEqual;
+        }
+        return false;
+    }
+
+    public function grantRole(string $role): self {
+        $roles = $this->roles;
+        $roles[] = $role;
+        $this->roles = array_unique($roles);
+        return $this;
+    }
+
+    public function revokeRole(string $role): self {
+        $roles = $this->roles;
+        if (($key = array_search($role, $roles, true)) !== false) { unset($roles[$key]); }
+        $this->roles = $roles;
         return $this;
     }
 }

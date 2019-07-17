@@ -3,6 +3,14 @@ security:
         App\Entity\User:
             algorithm: argon2i
 
+    role_hierarchy:
+        ROLE_ROOT: ROLE_ADMIN, ROLE_ACCOUNT_FULL_CONTROL
+        ROLE_ADMIN: ROLE_MODERATOR, ROLE_ARTICLE_FULL_CONTROL
+        ROLE_ARTICLE_FULL_CONTROL: ROLE_ARTICLE_LIST, ROLE_ARTICLE_CREATE, ROLE_ARTICLE_DELETE, ROLE_ARTICLE_EDIT
+        ROLE_ACCOUNT_FULL_CONTROL: ROLE_ACCOUNT_CREATE, ROLE_ACCOUNT_DELETE, ROLE_ACCOUNT_CHANGE_EMAIL, ROLE_ACCOUNT_CHANGE_ACCOUNTNAME, ROLE_ACCOUNT_CHANGE_PASSWORD, ROLE_ACCOUNT_MODIFY_ROLES
+
+
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -16,10 +24,13 @@ security:
             security: false
         main:
             anonymous: ~
+            logout:
+                path: app_logout
+                target: app_home
             form_login:
                 csrf_token_generator: security.csrf.token_manager
-                login_path: login
-                check_path: login
+                login_path: app_login
+                check_path: app_login
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator

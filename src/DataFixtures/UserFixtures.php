@@ -21,10 +21,10 @@ class UserFixtures extends Fixture
         // $manager->persist($product);
         $user = new User();
         $user->setEmail('admin@localhost');
+        $user->setRoles(['ROLE_ROOT',]);
         $user->setUsername('root');
         $user->setPassword($this->passwordEncoder->encodePassword($user,'root'));
         $manager->persist($user);
-
         $manager->flush();
     }
 }
